@@ -1,0 +1,65 @@
+@import url("https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@600&display=swap");
+
+:root {
+  --green: #538d4e;
+  --yellow: #b59f3b;
+  --grey: #3a3a3c;
+}
+
+body {
+  background-color: #121213;
+  color: whitesmoke;
+  font-family: 'Libre Franklin', sans-serif;
+  font-weight: 600;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.wh-50 {
+  width: 50px;
+  height: 50px;
+}
+
+.width-200 {
+  width: 200px;
+}
+
+.min-width-35 {
+  min-width: 35px;
+}
+
+.bg-yellow {
+  background-color: var(--yellow);
+}
+
+.bg-green {
+  background-color: var(--green);
+}
+
+.bg-grey {
+  background-color: var(--grey);
+}
+
+.border-grey {
+  border-color: var(--grey);
+}
+
+.box:not(:empty) {
+  animation-name: PopIn;
+  animation-duration: 100ms;
+}
+
+
+@keyframes PopIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+
+  40% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
