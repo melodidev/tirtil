@@ -7,7 +7,6 @@ export default function GameOver(props) {
         ) : (
           <span>{props.target}</span>
         )}
-      
       </div>
       <div className="d-flex justify-content-center mb-3">
         <button onClick={props.playAgain} type="button" className="btn btn-success">Yeniden Oyna</button>
@@ -15,5 +14,3 @@ export default function GameOver(props) {
     </div>
   )
 }
-
-
