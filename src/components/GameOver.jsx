@@ -3,7 +3,7 @@ export default function GameOver(props) {
     <div className="position-absolute start-0 end-0 text-dark bg-light text-light width-200 rounded border border-3 border-secondary ms-auto me-auto mt-4">
       <div className="text-center my-2">
         {props.isWon ? (
-          <i className="fa-solid fa-trophy fa-xl text-warning"></i>
+          <div className="fs-2">🏆</div>
         ) : (
           <span>{props.target}</span>
         )}
