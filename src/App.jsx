@@ -9,6 +9,19 @@ const wordLength = 5;
 const rowCount = 6;
 const alphabet = "abcçdefgğhıijklmnoöprsştuüvyz";
 
+function toLowerCaseCustom(letter) {
+  let lowerCaseLetter = "";
+
+  if (letter == "İ") {
+    lowerCaseLetter = "i";
+  } else if (letter == "I") {
+    lowerCaseLetter = "ı";
+  } else {
+    lowerCaseLetter = letter.toLowerCase();
+  }
+  return lowerCaseLetter;
+}
+
 function randomWord() {
   return allAnswers[Math.floor(Math.random() * allAnswers.length)].toLowerCase();
 }
@@ -24,7 +37,9 @@ export default function App() {
 
   function handleMove(key) {
     if (disabled) return;
+
     let guess = guesses[currentGuessIndex];
+    key = toLowerCaseCustom(key);
 
     if (key == "enter") {
       if (guess.length < wordLength) {
@@ -77,7 +92,7 @@ export default function App() {
   function handleKeyPress(event) {
     if (disabled) return;
 
-    let key = event.key.toLowerCase();
+    let key = toLowerCaseCustom(event.key);
     if (key == "backspace") {
       handleMove("⌫");
     } else if (key == "enter") {
@@ -99,7 +114,7 @@ export default function App() {
       {!isPlaying && <GameOver playAgain={playAgain} isWon={isWon} target={target} />}
       <div className="text-center fs-1 text-uppercase m-2 mt-4">Tırtıl</div>
       {guesses.map((guess, i) => <Boxes key={i} index={i} currentGuessIndex={currentGuessIndex} guess={guess} target={target} />)}
-      <Keyboard handleMove={handleMove} target={target} guesses={guesses} currentGuessIndex={currentGuessIndex} />
+      <Keyboard handleMove={handleMove} target={target} guesses={guesses} currentGuessIndex={currentGuessIndex} alphabet={alphabet} toLowerCaseCustom={toLowerCaseCustom} />
     </div>
   )
 }

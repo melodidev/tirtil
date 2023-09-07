@@ -5,15 +5,14 @@ let keyboard = [
 ];
 
 export default function Keyboard(props) {
-
-  function setClassName(key, target, guesses, currentGuessIndex) {
-    let classNames = "d-flex justify-content-center rounded min-width-35 cursor-pointer fs-3 me-1 p-2";
+  function getClassName(key, target, guesses, currentGuessIndex) {
+    let classNames = "d-flex justify-content-center rounded cursor-pointer fs-key min-width-unset min-width-sm-35 me-1 p-2";
     let bg = "bg-secondary";
     let greenLetters = [];
 
     for (let i = 0; i < currentGuessIndex; i++) {
       [...guesses[i]].forEach((letter, j) => {
-        if (letter != key.toLowerCase()) {
+        if (letter != props.toLowerCaseCustom(key)) {
           return;
         } else if (target.includes(letter) && target.lastIndexOf(letter) == j) {
           bg = "bg-green";
@@ -38,7 +37,7 @@ export default function Keyboard(props) {
           {row.map((item) => (
             <div
               key={item}
-              className={setClassName(item, props.target, props.guesses, props.currentGuessIndex)}
+              className={getClassName(item, props.target, props.guesses, props.currentGuessIndex)}
               value={item}
               onClick={() => props.handleMove(item)}
             >

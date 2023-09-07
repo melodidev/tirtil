@@ -80,7 +80,7 @@ function Box({letter, situation=""}) {
 
   return (
     <div className={`wh-50 border border-2 border-secondary fs-2 mb-1 me-1 ${bg}`}>
-      <div className="d-flex justify-content-center align-items-center box text-uppercase">{letter}</div>
+      <div className="d-flex justify-content-center text-uppercase box-animation mt-1 mt-sm-0">{letter}</div>
     </div>
   );
 }
