@@ -6,7 +6,7 @@ let keyboard = [
 
 export default function Keyboard(props) {
   function getClassName(key, target, guesses, currentGuessIndex) {
-    let classNames = "d-flex justify-content-center rounded cursor-pointer fs-key min-width-unset min-width-sm-35 me-1 p-2";
+    let classNames = "d-flex justify-content-center rounded cursor-pointer fs-key min-width-28 min-width-sm-35 me-1 px-2 py-3 py-sm-2";
     let bg = "bg-secondary";
     let greenLetters = [];
 

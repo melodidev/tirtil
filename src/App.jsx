@@ -90,7 +90,9 @@ export default function App() {
   }
 
   function handleKeyPress(event) {
-    if (disabled) return;
+    if (disabled && event.key == "Enter") {
+      playAgain();
+    } else if (disabled) return;
 
     let key = toLowerCaseCustom(event.key);
     if (key == "backspace") {
