@@ -11,6 +11,7 @@ body {
   color: whitesmoke;
   font-family: 'Libre Franklin', sans-serif;
   font-weight: 600;
+  user-select: none;
 }
 
 .cursor-pointer {
@@ -68,6 +69,20 @@ body {
   40% {
     transform: scale(1.1);
     opacity: 1;
+  }
+}
+
+.popup-animation {
+  animation: FadeAway 0.3s ease 1.3s;
+}
+
+@keyframes FadeAway { 
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
   }
 }
 

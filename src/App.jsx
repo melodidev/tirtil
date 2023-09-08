@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Boxes from "./components/Boxes";
 import Keyboard from "./components/Keyboard";
 import GameOver from "./components/GameOver";
+import PopUp from "./components/PopUp";
 import { allWords, allAnswers } from "./wordList";
 import "./App.css";
 
@@ -33,6 +34,8 @@ export default function App() {
   let [target, setTarget] = useState(randomWord());
   let [guesses, setGuesses] = useState(Array(rowCount).fill(""));
   let [currentGuessIndex, setCurrentGuessIndex] = useState(0);
+  let [showPopUp, setShowPopUp] = useState(false);
+  let [popUpMessage, setPopUpMessage] = useState("");
   console.log(target);
 
   function handleMove(key) {
@@ -43,13 +46,15 @@ export default function App() {
 
     if (key == "enter") {
       if (guess.length < wordLength) {
-        alert("Yetersiz harf");
+        setPopUpMessage("Yetersiz harf");
+        setShowPopUp(true);
       } else if (guess.length == wordLength) {
         if (allWords.includes(guess)) {
           checkGameEnd();
           setCurrentGuessIndex(currentGuessIndex + 1);
         } else {
-          alert("Kelime listesinde yok");
+          setPopUpMessage("Kelime listesinde yok");
+          setShowPopUp(true);
         }
       }
     } else if (key == "⌫") {
@@ -111,8 +116,17 @@ export default function App() {
     };
   }, [handleKeyPress]);
 
+  useEffect(() => {
+    let timer = setTimeout(() => {
+      setShowPopUp(false);
+      setPopUpMessage("");
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, [showPopUp]);
+
   return (
     <div className="position-relative">
+      {showPopUp && <PopUp message={popUpMessage} /> }
       {!isPlaying && <GameOver playAgain={playAgain} isWon={isWon} target={target} />}
       <div className="text-center fs-1 text-uppercase m-2 mt-4">Tırtıl</div>
       {guesses.map((guess, i) => <Boxes key={i} index={i} currentGuessIndex={currentGuessIndex} guess={guess} target={target} />)}
