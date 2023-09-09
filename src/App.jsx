@@ -138,7 +138,7 @@ export default function App() {
       {showPopUp && <PopUp message={popUpMessage} /> }
       {!isPlaying && <GameOver language={language} playAgain={playAgain} isWon={isWon} target={target} />}
       <LanguageSelection changeLanguage={changeLanguage} language={language} />
-      <div className="text-center fs-1 text-uppercase p-2 pt-4">Tırtıl</div>
+      <div className="text-center fs-1 text-uppercase p-2 pt-4">{target}</div>
       {guesses.map((guess, i) => (
         <Boxes key={i} index={i} currentGuessIndex={currentGuessIndex} guess={guess} target={target} />
       ))}
