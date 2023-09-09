@@ -10,7 +10,7 @@ import "./App.css";
 const wordLength = 5;
 const rowCount = 6;
 
-function toLowerCaseCustom(letter, language="en") {
+function toLowerCaseCustom(letter, language="tr") {
   if (letter == "İ") {
     return "i";
   } else if (language == "tr" && letter == "I") {
@@ -20,12 +20,12 @@ function toLowerCaseCustom(letter, language="en") {
   }
 }
 
-function randomWord(language="en") {
+function randomWord(language="tr") {
   return allAnswers[language][Math.floor(Math.random() * allAnswers[language].length)].toLowerCase();
 }
 
 export default function App() {
-  let [language, setLanguage] = useState("en");
+  let [language, setLanguage] = useState("tr");
   let [isPlaying, setIsPlaying] = useState(true);
   let [isWon, setIsWon] = useState(false);
   let [disabled, setDisabled] = useState(false);
