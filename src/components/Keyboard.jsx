@@ -1,8 +1,4 @@
-let keyboard = [
-  ["E", "R", "T", "Y", "U", "I", "O", "P", "Ğ", "Ü"],
-  ["A", "S", "D", "F", "G", "H", "J", "K", "L", "Ş", "İ"],
-  ["enter", "Z", "C", "V", "B", "N", "M", "Ö", "Ç", "⌫"],
-];
+import { keyboard } from "../i18n.js";
 
 export default function Keyboard(props) {
   function getClassName(key, target, guesses, currentGuessIndex) {
@@ -12,7 +8,7 @@ export default function Keyboard(props) {
 
     for (let i = 0; i < currentGuessIndex; i++) {
       [...guesses[i]].forEach((letter, j) => {
-        if (letter != props.toLowerCaseCustom(key)) {
+        if (letter != props.toLowerCaseCustom(key, props.language)) {
           return;
         } else if (target.includes(letter) && target.lastIndexOf(letter) == j) {
           bg = "bg-green";
@@ -32,7 +28,7 @@ export default function Keyboard(props) {
 
   return (
     <div className="my-3">
-      {keyboard.map((row, i) => (
+      {keyboard[props.language].map((row, i) => (
         <div className="d-flex justify-content-center mb-2" key={i}>
           {row.map((item) => (
             <div
@@ -49,5 +45,3 @@ export default function Keyboard(props) {
     </div>
   )
 }
-
-

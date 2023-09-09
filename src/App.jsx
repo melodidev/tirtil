@@ -3,57 +3,62 @@ import Boxes from "./components/Boxes";
 import Keyboard from "./components/Keyboard";
 import GameOver from "./components/GameOver";
 import PopUp from "./components/PopUp";
-import { allWords, allAnswers } from "./wordList";
+import LanguageSelection from "./components/LanguageSelection";
+import { allAnswers, allWords, alphabet, msgNotEnough, msgNotFound } from "./i18n.js";
 import "./App.css";
 
 const wordLength = 5;
 const rowCount = 6;
-const alphabet = "abcçdefgğhıijklmnoöprsştuüvyz";
 
-function toLowerCaseCustom(letter) {
-  let lowerCaseLetter = "";
-
+function toLowerCaseCustom(letter, language="en") {
   if (letter == "İ") {
-    lowerCaseLetter = "i";
-  } else if (letter == "I") {
-    lowerCaseLetter = "ı";
+    return "i";
+  } else if (language == "tr" && letter == "I") {
+    return "ı";
   } else {
-    lowerCaseLetter = letter.toLowerCase();
+    return letter.toLowerCase();
   }
-  return lowerCaseLetter;
 }
 
-function randomWord() {
-  return allAnswers[Math.floor(Math.random() * allAnswers.length)].toLowerCase();
+function randomWord(language="en") {
+  return allAnswers[language][Math.floor(Math.random() * allAnswers[language].length)].toLowerCase();
 }
 
 export default function App() {
+  let [language, setLanguage] = useState("en");
   let [isPlaying, setIsPlaying] = useState(true);
   let [isWon, setIsWon] = useState(false);
   let [disabled, setDisabled] = useState(false);
-  let [target, setTarget] = useState(randomWord());
+  let [target, setTarget] = useState(randomWord(language));
   let [guesses, setGuesses] = useState(Array(rowCount).fill(""));
   let [currentGuessIndex, setCurrentGuessIndex] = useState(0);
   let [showPopUp, setShowPopUp] = useState(false);
   let [popUpMessage, setPopUpMessage] = useState("");
+
   console.log(target);
+
+  function changeLanguage(lang) {
+    if (lang == language) return;
+    document.documentElement.lang = lang;
+    setLanguage(lang);
+  }
 
   function handleMove(key) {
     if (disabled) return;
 
     let guess = guesses[currentGuessIndex];
-    key = toLowerCaseCustom(key);
+    key = toLowerCaseCustom(key, language);
 
     if (key == "enter") {
       if (guess.length < wordLength) {
-        setPopUpMessage("Yetersiz harf");
+        setPopUpMessage(msgNotEnough[language]);
         setShowPopUp(true);
       } else if (guess.length == wordLength) {
-        if (allWords.includes(guess)) {
+        if (allWords[language].includes(guess)) {
           checkGameEnd();
           setCurrentGuessIndex(currentGuessIndex + 1);
         } else {
-          setPopUpMessage("Kelime listesinde yok");
+          setPopUpMessage(msgNotFound[language]);
           setShowPopUp(true);
         }
       }
@@ -91,7 +96,7 @@ export default function App() {
     setDisabled(false);
     setGuesses(Array(rowCount).fill(""));
     setCurrentGuessIndex(0);
-    setTarget(randomWord());
+    setTarget(randomWord(language));
   }
 
   function handleKeyPress(event) {
@@ -99,12 +104,12 @@ export default function App() {
       playAgain();
     } else if (disabled) return;
 
-    let key = toLowerCaseCustom(event.key);
+    let key = toLowerCaseCustom(event.key, language);
     if (key == "backspace") {
       handleMove("⌫");
     } else if (key == "enter") {
       handleMove("enter");
-    } else if (key.length === 1 && alphabet.includes(key)) {
+    } else if (key.length === 1 && alphabet[language].includes(key)) {
       handleMove(key);
     }
   }
@@ -124,13 +129,27 @@ export default function App() {
     return () => clearTimeout(timer);
   }, [showPopUp]);
 
+  useEffect(() => {
+    playAgain();
+  }, [language]);
+
   return (
     <div className="position-relative">
       {showPopUp && <PopUp message={popUpMessage} /> }
-      {!isPlaying && <GameOver playAgain={playAgain} isWon={isWon} target={target} />}
-      <div className="text-center fs-1 text-uppercase m-2 mt-4">Tırtıl</div>
-      {guesses.map((guess, i) => <Boxes key={i} index={i} currentGuessIndex={currentGuessIndex} guess={guess} target={target} />)}
-      <Keyboard handleMove={handleMove} target={target} guesses={guesses} currentGuessIndex={currentGuessIndex} alphabet={alphabet} toLowerCaseCustom={toLowerCaseCustom} />
+      {!isPlaying && <GameOver language={language} playAgain={playAgain} isWon={isWon} target={target} />}
+      <LanguageSelection changeLanguage={changeLanguage} language={language} />
+      <div className="text-center fs-1 text-uppercase p-2 pt-4">Tırtıl</div>
+      {guesses.map((guess, i) => (
+        <Boxes key={i} index={i} currentGuessIndex={currentGuessIndex} guess={guess} target={target} />
+      ))}
+      <Keyboard
+        handleMove={handleMove}
+        target={target}
+        guesses={guesses}
+        currentGuessIndex={currentGuessIndex}
+        toLowerCaseCustom={(letter, language) => toLowerCaseCustom(letter, language)}
+        language={language}
+      />
     </div>
   )
 }
